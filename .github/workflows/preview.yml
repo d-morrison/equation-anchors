@@ -124,6 +124,22 @@ jobs:
           HTML_DIR: ${{ env.QUARTO_OUTPUT }}
           PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
 
+      - name: Ensure preview index page exists
+        run: |
+          if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ] && [ -f "index.qmd" ]; then
+            quarto render index.qmd --to html --output-dir "${{ env.QUARTO_OUTPUT }}" --no-clean
+          fi
+          if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ]; then
+            first_html="$(find "${{ env.QUARTO_OUTPUT }}" -maxdepth 1 -type f -name '*.html' | head -n 1)"
+            if [ -n "$first_html" ]; then
+              cp "$first_html" "${{ env.QUARTO_OUTPUT }}/index.html"
+            fi
+          fi
+          if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ]; then
+            echo "No index.html found in preview output"
+            exit 1
+          fi
+
       - name: Deploy PR Preview
         id: preview-step
         if: github.event_name == 'pull_request'
