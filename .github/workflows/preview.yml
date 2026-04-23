@@ -49,23 +49,27 @@ jobs:
             echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
           else
             mkdir -p _site
-            html_files=()
+            qmd_files=()
             while IFS= read -r -d '' qmd_file; do
+              qmd_files+=("$qmd_file")
+            done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+            html_files=()
+            for qmd_file in "${qmd_files[@]}"; do
               html_file="${qmd_file%.qmd}.html"
               if [ -f "$html_file" ]; then
                 html_files+=("$html_file")
               fi
-            done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+            done
             if [ ${#html_files[@]} -eq 0 ]; then
-              while IFS= read -r -d '' qmd_file; do
+              for qmd_file in "${qmd_files[@]}"; do
                 quarto render "$qmd_file" --to html --output-dir _site
-              done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
-              while IFS= read -r -d '' qmd_file; do
+              done
+              for qmd_file in "${qmd_files[@]}"; do
                 html_file="_site/$(basename "${qmd_file%.qmd}.html")"
                 if [ -f "$html_file" ]; then
                   html_files+=("$html_file")
                 fi
-              done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+              done
             fi
             if [ ${#html_files[@]} -gt 0 ]; then
               for html_file in "${html_files[@]}"; do
