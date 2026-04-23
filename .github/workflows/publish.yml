@@ -48,8 +48,23 @@ jobs:
                 html_files+=("$html_file")
               fi
             done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+            if [ ${#html_files[@]} -eq 0 ]; then
+              while IFS= read -r -d '' qmd_file; do
+                quarto render "$qmd_file" --to html --output-dir _site
+              done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+              while IFS= read -r -d '' qmd_file; do
+                html_file="_site/$(basename "${qmd_file%.qmd}.html")"
+                if [ -f "$html_file" ]; then
+                  html_files+=("$html_file")
+                fi
+              done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
+            fi
             if [ ${#html_files[@]} -gt 0 ]; then
-              cp "${html_files[@]}" _site/
+              for html_file in "${html_files[@]}"; do
+                if [[ "$html_file" != _site/* ]]; then
+                  cp "$html_file" _site/
+                fi
+              done
               echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
             else
               echo "No rendered output found. Ensure Quarto render succeeded and produced _book/, _site/, or .html output from top-level .qmd files."
