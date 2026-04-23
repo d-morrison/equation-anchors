@@ -9,16 +9,19 @@ end
 local function anchor_script()
   return [[
 <script>
-const defaultAnchorIconFallback = "#";
+const defaultAnchorIconFallback = "";
+const inlineAnchorSeparator = "\u00A0";
 
 function getDefaultAnchorTemplate() {
-  const defaultAnchor = document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
+  const defaultAnchor =
+    document.querySelector("a.anchorjs-link[data-anchorjs-icon]:not(.equation-anchor)") ||
+    document.querySelector("a.anchorjs-link[href^='#']:not(.equation-anchor)");
   if (!defaultAnchor) {
     return null;
   }
 
   return {
-    icon: defaultAnchor.getAttribute("data-anchorjs-icon"),
+    icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
     style: defaultAnchor.getAttribute("style")
   };
 }
@@ -29,10 +32,11 @@ function alignEquationAnchorWithDefault(anchor, template) {
   }
 
   anchor.classList.remove("external");
+  anchor.classList.add("no-external");
 
   if (template && template.icon) {
     anchor.setAttribute("data-anchorjs-icon", template.icon);
-    anchor.textContent = "";
+    anchor.textContent = template.icon;
   } else if (!anchor.textContent) {
     anchor.textContent = defaultAnchorIconFallback;
   }
@@ -75,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
     anchor.className = "equation-anchor anchorjs-link";
     anchor.href = "#" + id;
     anchor.setAttribute("aria-label", "Permalink to this equation");
+    equation.appendChild(document.createTextNode(inlineAnchorSeparator));
     equation.appendChild(anchor);
   });
 

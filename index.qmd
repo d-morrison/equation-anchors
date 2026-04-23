@@ -1,0 +1,18 @@
+---
+title: equation-anchors
+format: html
+filters:
+  - d-morrison/equation-anchors
+---
+
+This extension adds permalink anchors to display equations.
+
+Use `quarto add d-morrison/equation-anchors` in your Quarto project, then
+enable the filter:
+
+```yaml
+filters:
+  - d-morrison/equation-anchors
+```
+
+See [example.qmd](example.qmd) for a minimal working example.
