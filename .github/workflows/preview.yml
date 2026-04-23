@@ -49,7 +49,13 @@ jobs:
             echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
           else
             mkdir -p _site
-            mapfile -t html_files < <(shopt -s nullglob; printf '%s\n' *.html)
+            html_files=()
+            while IFS= read -r -d '' qmd_file; do
+              html_file="${qmd_file%.qmd}.html"
+              if [ -f "$html_file" ]; then
+                html_files+=("$html_file")
+              fi
+            done < <(find . -maxdepth 1 -type f -name '*.qmd' -print0)
             if [ ${#html_files[@]} -gt 0 ]; then
               cp "${html_files[@]}" _site/
               echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
