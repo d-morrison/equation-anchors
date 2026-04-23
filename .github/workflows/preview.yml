@@ -61,8 +61,8 @@ jobs:
               fi
             done
             if [ ${#html_files[@]} -eq 0 ]; then
+              quarto render "${qmd_files[@]}" --to html --output-dir _site
               for qmd_file in "${qmd_files[@]}"; do
-                quarto render "$qmd_file" --to html --output-dir _site
                 html_file="_site/$(basename "${qmd_file%.qmd}.html")"
                 if [ -f "$html_file" ]; then
                   html_files+=("$html_file")
