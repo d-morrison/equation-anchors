@@ -136,7 +136,7 @@ jobs:
             fi
           fi
           if [ ! -f "${{ env.QUARTO_OUTPUT }}/index.html" ]; then
-            echo "No index.html found in preview output"
+            echo "Failed to create index.html: no index.qmd found and no HTML files available in output directory"
             exit 1
           fi
 
