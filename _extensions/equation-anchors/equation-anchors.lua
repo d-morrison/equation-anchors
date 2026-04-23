@@ -22,6 +22,7 @@ function getDefaultAnchorTemplate() {
 
   return {
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
+    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
     style: defaultAnchor.getAttribute("style")
   };
 }
@@ -35,9 +36,15 @@ function alignEquationAnchorWithDefault(anchor, template) {
   anchor.classList.add("no-external");
 
   if (template && template.icon) {
-    anchor.setAttribute("data-anchorjs-icon", template.icon);
-    anchor.textContent = template.icon;
+    if (template.hasDataIcon) {
+      anchor.setAttribute("data-anchorjs-icon", template.icon);
+      anchor.textContent = "";
+    } else {
+      anchor.removeAttribute("data-anchorjs-icon");
+      anchor.textContent = template.icon;
+    }
   } else if (!anchor.textContent) {
+    anchor.removeAttribute("data-anchorjs-icon");
     anchor.textContent = defaultAnchorIconFallback;
   }
 
