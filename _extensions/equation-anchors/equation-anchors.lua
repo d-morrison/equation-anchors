@@ -52,13 +52,15 @@ function alignEquationAnchorsWithDefault() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const equations = document.querySelectorAll("span[id^='eq-']");
+  const equations = document.querySelectorAll("[id^='eq-']");
   equations.forEach(function (equation) {
     if (equation.querySelector(".equation-anchor")) {
       return;
     }
 
-    if (!equation.querySelector(".math.display")) {
+    const isDisplayMath =
+      equation.matches(".math.display") || equation.querySelector(".math.display");
+    if (!isDisplayMath) {
       return;
     }
 

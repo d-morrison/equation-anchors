@@ -2,7 +2,7 @@
 title: Equation Anchors Example
 format: html
 filters:
-  - equation-anchors
+  - d-morrison/equation-anchors
 ---
 
 The following display equation should include an anchor link:
