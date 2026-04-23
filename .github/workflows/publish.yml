@@ -52,7 +52,7 @@ jobs:
               cp "${html_files[@]}" _site/
               echo "QUARTO_OUTPUT=./_site" >> "$GITHUB_ENV"
             else
-              echo "No rendered output directory (_book or _site) or root rendered HTML files found."
+              echo "No rendered output found. Ensure Quarto render succeeded and produced _book/, _site/, or .html output from top-level .qmd files."
               exit 1
             fi
           fi
