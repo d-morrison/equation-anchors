@@ -9,20 +9,16 @@ end
 local function anchor_script()
   return [[
 <script>
-const defaultAnchorIconFallback = "";
-const inlineAnchorSeparator = "\u00A0";
+const defaultAnchorIconFallback = "#";
 
 function getDefaultAnchorTemplate() {
-  const defaultAnchor =
-    document.querySelector("a.anchorjs-link[data-anchorjs-icon]:not(.equation-anchor)") ||
-    document.querySelector("a.anchorjs-link[href^='#']:not(.equation-anchor)");
+  const defaultAnchor = document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
   if (!defaultAnchor) {
     return null;
   }
 
   return {
-    icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
-    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
+    icon: defaultAnchor.getAttribute("data-anchorjs-icon"),
     style: defaultAnchor.getAttribute("style")
   };
 }
@@ -33,18 +29,11 @@ function alignEquationAnchorWithDefault(anchor, template) {
   }
 
   anchor.classList.remove("external");
-  anchor.classList.add("no-external");
 
   if (template && template.icon) {
-    if (template.hasDataIcon) {
-      anchor.setAttribute("data-anchorjs-icon", template.icon);
-      anchor.textContent = "";
-    } else {
-      anchor.removeAttribute("data-anchorjs-icon");
-      anchor.textContent = template.icon;
-    }
+    anchor.setAttribute("data-anchorjs-icon", template.icon);
+    anchor.textContent = "";
   } else if (!anchor.textContent) {
-    anchor.removeAttribute("data-anchorjs-icon");
     anchor.textContent = defaultAnchorIconFallback;
   }
 
@@ -86,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
     anchor.className = "equation-anchor anchorjs-link";
     anchor.href = "#" + id;
     anchor.setAttribute("aria-label", "Permalink to this equation");
-    equation.appendChild(document.createTextNode(inlineAnchorSeparator));
     equation.appendChild(anchor);
   });
 
