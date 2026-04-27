@@ -117,8 +117,17 @@ function getDefaultAnchorTemplate() {
   return {
     // Detect icon value from the template anchor's attribute or text.
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
+    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
     style: defaultAnchor.getAttribute("style")
   };
+}
+
+function normalizeAnchorIcon(icon) {
+  if (!icon || icon === "#") {
+    return defaultAnchorIconFallback;
+  }
+
+  return icon;
 }
 
 function alignEquationAnchorWithDefault(anchor, template) {
@@ -129,12 +138,15 @@ function alignEquationAnchorWithDefault(anchor, template) {
   anchor.classList.remove("external");
   anchor.classList.add("no-external");
 
-  if (template && template.icon) {
-    anchor.setAttribute("data-anchorjs-icon", template.icon);
+  const normalizedIcon = normalizeAnchorIcon(template && template.icon);
+  const useDataIcon = !template || template.hasDataIcon || normalizedIcon === defaultAnchorIconFallback;
+
+  if (useDataIcon) {
+    anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
     anchor.textContent = "";
   } else {
-    anchor.setAttribute("data-anchorjs-icon", defaultAnchorIconFallback);
-    anchor.textContent = "";
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.textContent = normalizedIcon;
   }
 
   if (template && template.style) {
