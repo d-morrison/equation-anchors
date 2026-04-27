@@ -10,6 +10,7 @@ local function anchor_script()
   return [[
 <script>
 const defaultAnchorIconFallback = "";
+// Quarto uses Bootstrap Icons glyphs for this icon; ensure fallback renders correctly.
 const defaultAnchorStyleFallback = 'font-family: "bootstrap-icons";';
 
 function getDefaultAnchorTemplate() {
@@ -22,6 +23,7 @@ function getDefaultAnchorTemplate() {
   }
 
   return {
+    // Keep text fallback to support templates that define icon text instead of data-anchorjs-icon.
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
     style: defaultAnchor.getAttribute("style")
   };
