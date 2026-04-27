@@ -9,9 +9,17 @@ end
 local function anchor_script()
   return [[
 <script>
-const defaultAnchorIconFallback = "";
-// Quarto's default heading-anchor chain-link glyph comes from Bootstrap Icons.
-const defaultAnchorStyleFallback = 'font-family: "bootstrap-icons";';
+function getQuartoHeadingAnchorIcon() {
+  const afterBodyScript = document.getElementById("quarto-html-after-body");
+  if (!afterBodyScript) {
+    return null;
+  }
+
+  const match = afterBodyScript.textContent.match(/const icon = "([^"]+)"/);
+  return match ? match[1] : null;
+}
+
+const defaultAnchorIconFallback = getQuartoHeadingAnchorIcon() || "\ue9cb";
 
 function getDefaultAnchorTemplate() {
   // Prefer Quarto heading anchors first so the visible chain-link icon is reused.
@@ -47,20 +55,13 @@ function alignEquationAnchorWithDefault(anchor, template) {
   anchor.classList.add("no-external");
 
   const normalizedIcon = normalizeAnchorIcon(template && template.icon);
-  const useDataIcon = !template || template.hasDataIcon || normalizedIcon === defaultAnchorIconFallback;
-
-  if (useDataIcon) {
-    anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
-    anchor.textContent = "";
-  } else {
-    anchor.removeAttribute("data-anchorjs-icon");
-    anchor.textContent = normalizedIcon;
-  }
+  anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
+  anchor.textContent = normalizedIcon;
 
   if (template && template.style) {
     anchor.setAttribute("style", template.style);
   } else {
-    anchor.setAttribute("style", defaultAnchorStyleFallback);
+    anchor.removeAttribute("style");
   }
 }
 
