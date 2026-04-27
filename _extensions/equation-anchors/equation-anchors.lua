@@ -10,6 +10,7 @@ local function anchor_script()
   return [[
 <script>
 const defaultAnchorIconFallback = "";
+const defaultAnchorStyleFallback = 'font-family: "bootstrap-icons";';
 
 function getDefaultAnchorTemplate() {
   // Prefer Quarto heading anchors first so the visible chain-link icon is reused.
@@ -22,7 +23,6 @@ function getDefaultAnchorTemplate() {
 
   return {
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
-    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
     style: defaultAnchor.getAttribute("style")
   };
 }
@@ -33,24 +33,20 @@ function alignEquationAnchorWithDefault(anchor, template) {
   }
 
   anchor.classList.remove("external");
+  anchor.classList.add("no-external");
 
   if (template && template.icon) {
-    if (template.hasDataIcon) {
-      anchor.setAttribute("data-anchorjs-icon", template.icon);
-      anchor.textContent = "";
-    } else {
-      anchor.removeAttribute("data-anchorjs-icon");
-      anchor.textContent = template.icon;
-    }
-  } else if (!anchor.textContent) {
-    anchor.removeAttribute("data-anchorjs-icon");
-    anchor.textContent = defaultAnchorIconFallback;
+    anchor.setAttribute("data-anchorjs-icon", template.icon);
+    anchor.textContent = "";
+  } else {
+    anchor.setAttribute("data-anchorjs-icon", defaultAnchorIconFallback);
+    anchor.textContent = "";
   }
 
   if (template && template.style) {
     anchor.setAttribute("style", template.style);
   } else {
-    anchor.removeAttribute("style");
+    anchor.setAttribute("style", defaultAnchorStyleFallback);
   }
 }
 
