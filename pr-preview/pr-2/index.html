@@ -108,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>See <a href="example.qmd">example.qmd</a> for a minimal working example, or open the <a href="example.html">rendered example page</a>.</p>
 <script>
 const defaultAnchorIconFallback = "";
-// Quarto uses Bootstrap Icons glyphs for this icon; ensure fallback renders correctly.
+// Quarto's default heading-anchor chain-link glyph comes from Bootstrap Icons.
 const defaultAnchorStyleFallback = 'font-family: "bootstrap-icons";';
 
 function getDefaultAnchorTemplate() {
@@ -121,7 +121,7 @@ function getDefaultAnchorTemplate() {
   }
 
   return {
-    // Detect icon from data attribute or text, then normalize output via data-anchorjs-icon.
+    // Detect icon value from the template anchor's attribute or text.
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
     style: defaultAnchor.getAttribute("style")
   };
