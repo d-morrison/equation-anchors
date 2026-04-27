@@ -12,6 +12,7 @@ local function anchor_script()
 const defaultAnchorIconFallback = "";
 
 function getDefaultAnchorTemplate() {
+  // Prefer Quarto heading anchors first so the visible chain-link icon is reused.
   const defaultAnchor =
     document.querySelector(".anchored > a.anchorjs-link") ||
     document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
