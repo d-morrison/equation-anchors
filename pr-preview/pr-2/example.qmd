@@ -3,8 +3,8 @@ title: Equation Anchors Example
 format: html
 filters:
   - d-morrison/equation-anchors
+preview-changed: true
 ---
-
 The following display equation should include an anchor link:
 
 $$
