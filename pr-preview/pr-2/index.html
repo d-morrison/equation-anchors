@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-7f8d28353e1b7aed8a50cdb71f958a5d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-6b009d4f49bc6c3d3d224639bf075233.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -108,6 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>See <a href="example.qmd">example.qmd</a> for a minimal working example, or open the <a href="example.html">rendered example page</a>.</p>
 <script>
 const defaultAnchorIconFallback = "";
+const defaultAnchorStyleFallback = 'font-family: "bootstrap-icons";';
 
 function getDefaultAnchorTemplate() {
   // Prefer Quarto heading anchors first so the visible chain-link icon is reused.
@@ -120,7 +121,6 @@ function getDefaultAnchorTemplate() {
 
   return {
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
-    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
     style: defaultAnchor.getAttribute("style")
   };
 }
@@ -131,24 +131,20 @@ function alignEquationAnchorWithDefault(anchor, template) {
   }
 
   anchor.classList.remove("external");
+  anchor.classList.add("no-external");
 
   if (template && template.icon) {
-    if (template.hasDataIcon) {
-      anchor.setAttribute("data-anchorjs-icon", template.icon);
-      anchor.textContent = "";
-    } else {
-      anchor.removeAttribute("data-anchorjs-icon");
-      anchor.textContent = template.icon;
-    }
-  } else if (!anchor.textContent) {
-    anchor.removeAttribute("data-anchorjs-icon");
-    anchor.textContent = defaultAnchorIconFallback;
+    anchor.setAttribute("data-anchorjs-icon", template.icon);
+    anchor.textContent = "";
+  } else {
+    anchor.setAttribute("data-anchorjs-icon", defaultAnchorIconFallback);
+    anchor.textContent = "";
   }
 
   if (template && template.style) {
     anchor.setAttribute("style", template.style);
   } else {
-    anchor.removeAttribute("style");
+    anchor.setAttribute("style", defaultAnchorStyleFallback);
   }
 }
 
