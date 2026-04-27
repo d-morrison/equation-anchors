@@ -111,9 +111,8 @@ const defaultAnchorIconFallback = "";
 
 function getDefaultAnchorTemplate() {
   const defaultAnchor =
-    document.querySelector(
-      "h1.anchored > a.anchorjs-link, h2.anchored > a.anchorjs-link, h3.anchored > a.anchorjs-link, h4.anchored > a.anchorjs-link, h5.anchored > a.anchorjs-link, h6.anchored > a.anchorjs-link"
-    ) || document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
+    document.querySelector(".anchored > a.anchorjs-link") ||
+    document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
   if (!defaultAnchor) {
     return null;
   }
