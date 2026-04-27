@@ -121,7 +121,7 @@ function getDefaultAnchorTemplate() {
   }
 
   return {
-    // Detect icon from data attribute or text for templates that don't emit data-anchorjs-icon.
+    // Detect icon from data attribute or text, then normalize output via data-anchorjs-icon.
     icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
     style: defaultAnchor.getAttribute("style")
   };
