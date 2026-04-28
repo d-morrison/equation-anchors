@@ -113,6 +113,8 @@ function getQuartoHeadingAnchorIcon() {
 
 // Quarto chain-link glyph from Bootstrap Icons.
 const chainLinkIconFallback = "\ue9cb";
+const chainLinkSvgFallback =
+  "<svg viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false' class='equation-anchor-icon'><path d='M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-2H11a4 4 0 0 1-4 3H4a4 4 0 0 1 0-8h2.354z'/><path d='M9.646 10.5H12a3 3 0 1 0 0-6H9a3 3 0 0 0-2.83 2H5a4 4 0 0 1 4-3h3a4 4 0 0 1 0 8H9.646z'/><path d='M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5'/></svg>";
 const headingAnchorIcon = getQuartoHeadingAnchorIcon();
 const defaultAnchorIconFallback =
   headingAnchorIcon && headingAnchorIcon !== "#" ? headingAnchorIcon : chainLinkIconFallback;
@@ -142,28 +144,6 @@ function normalizeAnchorIcon(icon) {
   return icon;
 }
 
-function createChainLinkSvgIcon() {
-  const svgNs = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNs, "svg");
-  svg.setAttribute("viewBox", "0 0 16 16");
-  svg.setAttribute("fill", "currentColor");
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("focusable", "false");
-  svg.setAttribute("class", "equation-anchor-icon");
-
-  [
-    "M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-2H11a4 4 0 0 1-4 3H4a4 4 0 0 1 0-8h2.354z",
-    "M9.646 10.5H12a3 3 0 1 0 0-6H9a3 3 0 0 0-2.83 2H5a4 4 0 0 1 4-3h3a4 4 0 0 1 0 8H9.646z",
-    "M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"
-  ].forEach(function (pathData) {
-    const path = document.createElementNS(svgNs, "path");
-    path.setAttribute("d", pathData);
-    svg.appendChild(path);
-  });
-
-  return svg;
-}
-
 function alignEquationAnchorWithDefault(anchor, template) {
   if (!anchor) {
     return;
@@ -176,7 +156,7 @@ function alignEquationAnchorWithDefault(anchor, template) {
   if (normalizedIcon === chainLinkIconFallback) {
     anchor.removeAttribute("data-anchorjs-icon");
     anchor.textContent = "";
-    anchor.appendChild(createChainLinkSvgIcon());
+    anchor.innerHTML = chainLinkSvgFallback;
   } else if (template && template.hasDataIcon) {
     anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
     anchor.textContent = normalizedIcon;
