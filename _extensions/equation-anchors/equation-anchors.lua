@@ -70,7 +70,6 @@ function alignEquationAnchorWithDefault(anchor, template) {
     anchor.textContent = normalizedIcon;
   } else {
     anchor.removeAttribute("data-anchorjs-icon");
-    anchor.innerHTML = "";
     anchor.textContent = normalizedIcon;
   }
 
