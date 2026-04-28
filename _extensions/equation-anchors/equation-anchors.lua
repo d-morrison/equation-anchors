@@ -21,6 +21,8 @@ function getQuartoHeadingAnchorIcon() {
 
 // Quarto chain-link glyph from Bootstrap Icons.
 const chainLinkIconFallback = "\ue9cb";
+const chainLinkSvgFallback =
+  "<svg viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' focusable='false' class='equation-anchor-icon'><path d='M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-2H11a4 4 0 0 1-4 3H4a4 4 0 0 1 0-8h2.354z'/><path d='M9.646 10.5H12a3 3 0 1 0 0-6H9a3 3 0 0 0-2.83 2H5a4 4 0 0 1 4-3h3a4 4 0 0 1 0 8H9.646z'/><path d='M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5'/></svg>";
 const headingAnchorIcon = getQuartoHeadingAnchorIcon();
 const defaultAnchorIconFallback =
   headingAnchorIcon && headingAnchorIcon !== "#" ? headingAnchorIcon : chainLinkIconFallback;
@@ -59,8 +61,18 @@ function alignEquationAnchorWithDefault(anchor, template) {
   anchor.classList.add("no-external");
 
   const normalizedIcon = normalizeAnchorIcon(template && template.icon);
-  anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
-  anchor.textContent = normalizedIcon;
+  if (normalizedIcon === chainLinkIconFallback) {
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.textContent = "";
+    anchor.innerHTML = chainLinkSvgFallback;
+  } else if (template && template.hasDataIcon) {
+    anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
+    anchor.textContent = normalizedIcon;
+  } else {
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.innerHTML = "";
+    anchor.textContent = normalizedIcon;
+  }
 
   if (template && template.style) {
     anchor.setAttribute("style", template.style);
@@ -100,6 +112,11 @@ function ensureEquationAnchorStyles() {
     }
     .equation-anchor:hover {
       opacity: 1;
+    }
+    .equation-anchor-icon {
+      width: 0.9em;
+      height: 0.9em;
+      vertical-align: -0.125em;
     }
   `;
   document.head.appendChild(style);
