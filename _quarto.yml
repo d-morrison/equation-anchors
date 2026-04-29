@@ -1,0 +1,12 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "equation-anchors"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: example.qmd
+        text: Example
