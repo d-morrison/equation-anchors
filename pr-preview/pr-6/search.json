@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "example.html",
+    "href": "example.html",
+    "title": "Equation Anchors Example",
+    "section": "",
+    "text": "The following unlabeled display equation should include an anchor link on the left:\n\\[\nx^2 + y^2 = z^2\n\\]\nThe following labeled display equation also gets an anchor link:\n\\[\nf(x) = \\int_{-\\infty}^{\\infty} e^{-t^2} \\, dt\n\\tag{1}\\]\nYou can also reference it as Equation 1."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "equation-anchors",
+    "section": "",
+    "text": "This extension adds permalink anchors to display equations.\nUse quarto add d-morrison/equation-anchors in your Quarto project, then enable the filter:\nfilters:\n  - d-morrison/equation-anchors\nSee example.qmd for a minimal working example, or open the rendered example page."
+  }
+]
