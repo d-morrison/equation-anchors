@@ -75,6 +75,17 @@ window.Quarto = {
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 
 <main class="content" id="quarto-document-content">
+<div class="preview-combined-banner">
+    <p style="margin: 0;">
+        <strong>📝 Preview Changes:</strong> This page has been modified in this pull request (~13% of content changed).
+        <br>
+        <strong>🎨 Highlighting Legend:</strong> 
+        <mark class="preview-text-changed" style="display: inline; padding: 1px 3px;">Modified text (yellow)</mark> shows changed words/phrases with tooltips of original text, 
+        <mark class="preview-text-added" style="display: inline; padding: 1px 3px;">added text (green)</mark> shows new content, and 
+        <mark class="preview-element-added" style="display: inline; padding: 1px 3px;">new sections (blue)</mark> highlight entirely new paragraphs.
+    </p>
+</div>
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -95,7 +106,11 @@ window.Quarto = {
 </header>
 
 
-<p>The following display equation should include an anchor link:</p>
+<p>The following<mark class="preview-text-added"> unlabeled</mark> display equation should include an anchor <mark class="preview-text-changed">link on the left:</mark></p>
+<p><mark class="preview-element-added"><span class="math display">\[
+x^2 + y^2 = z^2
+\]</span></mark></p>
+<p><mark class="preview-element-added">The following labeled display equation also gets an anchor link:</mark></p>
 <p><span id="eq-gaussian"><span class="math display">\[
 f(x) = \int_{-\infty}^{\infty} e^{-t^2} \, dt
 \tag{1}\]</span></span></p>
@@ -214,7 +229,7 @@ function ensureEquationAnchorStyles() {
     }
     .equation-anchor {
       position: absolute;
-      right: calc(-1 * var(--equation-anchor-offset));
+      left: calc(-1 * var(--equation-anchor-offset));
       top: 50%;
       transform: translateY(-50%);
       text-decoration: none;
@@ -236,30 +251,38 @@ function ensureEquationAnchorStyles() {
 document.addEventListener("DOMContentLoaded", function () {
   ensureEquationAnchorStyles();
 
-  const equations = document.querySelectorAll("[id^='eq-']");
-  equations.forEach(function (equation) {
-    if (equation.querySelector(".equation-anchor")) {
+  let counter = 0;
+
+  document.querySelectorAll(".math.display").forEach(function (mathEl) {
+    // For labeled equations, Quarto wraps the math display span in an eq-* span.
+    // For unlabeled equations, use the parent element (typically a <p>).
+    const labeledContainer = mathEl.closest("[id^='eq-']");
+    const target = labeledContainer || mathEl.parentElement;
+
+    if (!target) {
       return;
     }
 
-    const isDisplayMath =
-      equation.matches(".math.display") || equation.querySelector(".math.display");
-    if (!isDisplayMath) {
+    // Skip if already processed.
+    if (target.querySelector(":scope > .equation-anchor")) {
       return;
     }
 
-    const id = equation.getAttribute("id");
+    // Use the labeled container's id, or assign an auto-generated id.
+    let id = labeledContainer ? labeledContainer.id : target.id;
     if (!id) {
-      return;
+      counter++;
+      id = "eq-anchor-" + counter;
+      target.id = id;
     }
 
-    equation.classList.add("equation-anchor-target");
+    target.classList.add("equation-anchor-target");
 
     const anchor = document.createElement("a");
     anchor.className = "equation-anchor anchorjs-link";
     anchor.href = "#" + id;
     anchor.setAttribute("aria-label", "Permalink to this equation");
-    equation.appendChild(anchor);
+    target.appendChild(anchor);
   });
 
   alignEquationAnchorsWithDefault();

@@ -3,9 +3,15 @@ title: Equation Anchors Example
 format: html
 filters:
   - d-morrison/equation-anchors
+preview-changed: true
 ---
+The following unlabeled display equation should include an anchor link on the left:
 
-The following display equation should include an anchor link:
+$$
+x^2 + y^2 = z^2
+$$
+
+The following labeled display equation also gets an anchor link:
 
 $$
 f(x) = \int_{-\infty}^{\infty} e^{-t^2} \, dt
