@@ -1,0 +1,14 @@
+---
+title: Equation Anchors Example
+format: html
+filters:
+  - d-morrison/equation-anchors
+---
+
+The following display equation should include an anchor link:
+
+$$
+f(x) = \int_{-\infty}^{\infty} e^{-t^2} \, dt
+$$ {#eq-gaussian}
+
+You can also reference it as @eq-gaussian.
