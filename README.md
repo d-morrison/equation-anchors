@@ -21,9 +21,10 @@ filters:
   - d-morrison/equation-anchors
 ```
 
-For HTML/revealjs output, the extension appends an anchor link to each display
-equation with an `eq-` identifier so readers can copy a direct URL to that
-equation.
+For HTML/revealjs output, the extension adds a left-side anchor link to every
+display equation so readers can copy a direct URL to that equation.
+Unlabeled equations receive an auto-generated `eq-anchor-N` identifier;
+labeled equations (those with an `{#eq-*}` identifier) use their existing id.
 
 ## Example
 

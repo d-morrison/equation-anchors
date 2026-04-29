@@ -5,7 +5,13 @@ filters:
   - d-morrison/equation-anchors
 ---
 
-The following display equation should include an anchor link:
+The following unlabeled display equation should include an anchor link on the left:
+
+$$
+x^2 + y^2 = z^2
+$$
+
+The following labeled display equation also gets an anchor link:
 
 $$
 f(x) = \int_{-\infty}^{\infty} e^{-t^2} \, dt
