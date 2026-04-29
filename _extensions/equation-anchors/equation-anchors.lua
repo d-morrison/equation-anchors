@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Skip if already processed.
-    if (target.querySelector(":scope > .equation-anchor")) {
+    if (target.querySelector(".equation-anchor")) {
       return;
     }
 
